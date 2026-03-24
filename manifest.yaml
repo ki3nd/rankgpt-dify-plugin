@@ -1,0 +1,43 @@
+﻿version: 0.0.1
+type: plugin
+author: ki3dn
+name: rankgpt
+label:
+  en_US: rankgpt
+  ja_JP: rankgpt
+  zh_Hans: rankgpt
+  pt_BR: rankgpt
+description:
+  en_US: OpenAI-based RankGPT reranker for reordering retrieved documents by query relevance.
+  ja_JP: クエリ関連性に基づいて検索文書を再順位付けする OpenAI ベースの RankGPT リランカー。
+  zh_Hans: 基于 OpenAI 的 RankGPT 重排模型，可按查询相关性重新排序检索文档。
+  pt_BR: Reranqueador RankGPT baseado em OpenAI para reordenar documentos recuperados por relevancia da consulta.
+icon: icon.svg
+icon_dark: icon.svg
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+      text_embedding: false
+      rerank: true
+      tts: false
+      speech2text: false
+      moderation: false
+plugins:
+  models:
+    - provider/rankgpt.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: 0.1.0
+created_at: 2026-03-24T09:21:42.0401051+07:00
+privacy: PRIVACY.md
+verified: false

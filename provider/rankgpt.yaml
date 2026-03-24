@@ -1,0 +1,100 @@
+﻿provider: rankgpt
+label:
+  en_US: Rankgpt
+description:
+  en_US: OpenAI-based GPT rerank model (RankGPT style).
+  zh_Hans: 基于 OpenAI 的 GPT 重排模型（RankGPT 风格）。
+  ja_JP: OpenAI ベースの GPT リランキングモデル（RankGPT 方式）。
+icon_small:
+  en_US: icon.svg
+icon_large:
+  en_US: icon.svg
+background: "#E5E7EB"
+help:
+  title:
+    en_US: Get your OpenAI API Key
+    zh_Hans: 获取 OpenAI API Key
+    ja_JP: OpenAI API キーを取得
+  url:
+    en_US: https://platform.openai.com/api-keys
+supported_model_types:
+  - rerank
+configurate_methods:
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+      ja_JP: モデル名
+    placeholder:
+      en_US: Enter OpenAI model name (e.g. gpt-4o-mini)
+      zh_Hans: 输入 OpenAI 模型名（例如 gpt-4o-mini）
+      ja_JP: OpenAI モデル名を入力（例：gpt-4o-mini）
+  credential_form_schemas:
+    - variable: openai_api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入 OpenAI API Key
+        en_US: Enter your API Key
+    - variable: openai_base_url
+      label:
+        en_US: Base URL (optional)
+      type: text-input
+      required: false
+      placeholder:
+        en_US: https://api.openai.com/v1
+    - variable: window_size
+      label:
+        en_US: Sliding window size
+        zh_Hans: 滑动窗口大小
+      required: false
+      show_on:
+        - variable: __model_type
+          value: rerank
+      type: text-input
+      default: "20"
+      placeholder:
+        en_US: Enter rerank window size
+    - variable: step_size
+      label:
+        en_US: Sliding step size
+        zh_Hans: 滑动步长
+      required: false
+      show_on:
+        - variable: __model_type
+          value: rerank
+      type: text-input
+      default: "10"
+      placeholder:
+        en_US: Enter rerank step size
+    - variable: max_doc_words
+      label:
+        en_US: Max words per doc
+        zh_Hans: 单文档最大词数
+      required: false
+      show_on:
+        - variable: __model_type
+          value: rerank
+      type: text-input
+      default: "300"
+      placeholder:
+        en_US: Truncate each passage before reranking
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: openai_api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入 OpenAI API Key
+        en_US: Enter your API Key
+extra:
+  python:
+    provider_source: provider/rankgpt.py
+    model_sources:
+      - models/rerank/rerank.py
