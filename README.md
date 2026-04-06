@@ -2,6 +2,11 @@
 
 OpenAI-based RankGPT reranker plugin for Dify.
 
+**Author:** [ki3dn](https://github.com/ki3nd)   
+**Type:** model   
+**Github Repo:** [https://github.com/ki3nd/rankgpt-dify-plugin](https://github.com/ki3nd/rankgpt-dify-plugin)   
+**Github Issues:** [issues](https://github.com/ki3nd/rankgpt-dify-plugin/issues)  
+
 ## Overview
 
 This plugin adds a `rerank model provider` to Dify and uses GPT to reorder retrieved documents by query relevance.
