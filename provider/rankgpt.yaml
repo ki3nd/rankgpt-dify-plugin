@@ -1,22 +1,15 @@
-﻿provider: rankgpt
+provider: rankgpt
 label:
-  en_US: Rankgpt
+  en_US: RankGPT
 description:
-  en_US: OpenAI-based GPT rerank model (RankGPT style).
-  zh_Hans: 基于 OpenAI 的 GPT 重排模型（RankGPT 风格）。
-  ja_JP: OpenAI ベースの GPT リランキングモデル（RankGPT 方式）。
+  en_US: LLM-based reranker supporting OpenAI and Google Gemini (RankGPT style).
+  zh_Hans: 支持 OpenAI 和 Google Gemini 的 LLM 重排模型（RankGPT 风格）。
+  ja_JP: OpenAI と Google Gemini をサポートする LLM リランキングモデル（RankGPT 方式）。
 icon_small:
   en_US: icon.svg
 icon_large:
   en_US: icon.svg
 background: "#E5E7EB"
-help:
-  title:
-    en_US: Get your OpenAI API Key
-    zh_Hans: 获取 OpenAI API Key
-    ja_JP: OpenAI API キーを取得
-  url:
-    en_US: https://platform.openai.com/api-keys
 supported_model_types:
   - rerank
 configurate_methods:
@@ -28,29 +21,74 @@ model_credential_schema:
       zh_Hans: 模型名称
       ja_JP: モデル名
     placeholder:
-      en_US: Enter OpenAI model name (e.g. gpt-4o-mini)
-      zh_Hans: 输入 OpenAI 模型名（例如 gpt-4o-mini）
-      ja_JP: OpenAI モデル名を入力（例：gpt-4o-mini）
+      en_US: "e.g. gpt-4o-mini (OpenAI) or gemini-2.0-flash (Gemini)"
+      zh_Hans: "例如 gpt-4o-mini (OpenAI) 或 gemini-2.0-flash (Gemini)"
+      ja_JP: "例：gpt-4o-mini (OpenAI) または gemini-2.0-flash (Gemini)"
   credential_form_schemas:
+    - variable: provider
+      label:
+        en_US: Provider
+        zh_Hans: 服务商
+        ja_JP: プロバイダー
+      type: select
+      required: true
+      default: openai
+      options:
+        - value: openai
+          label:
+            en_US: OpenAI
+            zh_Hans: OpenAI
+            ja_JP: OpenAI
+        - value: gemini
+          label:
+            en_US: Google Gemini
+            zh_Hans: Google Gemini
+            ja_JP: Google Gemini
     - variable: openai_api_key
       label:
-        en_US: API Key
+        en_US: OpenAI API Key
+        zh_Hans: OpenAI API Key
+        ja_JP: OpenAI API キー
       type: secret-input
-      required: true
+      required: false
+      show_on:
+        - variable: provider
+          value: openai
       placeholder:
+        en_US: Enter your OpenAI API Key
         zh_Hans: 在此输入 OpenAI API Key
-        en_US: Enter your API Key
+        ja_JP: OpenAI API キーを入力
     - variable: openai_base_url
       label:
         en_US: Base URL (optional)
+        zh_Hans: Base URL（可选）
+        ja_JP: ベース URL（省略可）
       type: text-input
       required: false
+      show_on:
+        - variable: provider
+          value: openai
       placeholder:
         en_US: https://api.openai.com/v1
+    - variable: gemini_api_key
+      label:
+        en_US: Gemini API Key
+        zh_Hans: Gemini API Key
+        ja_JP: Gemini API キー
+      type: secret-input
+      required: false
+      show_on:
+        - variable: provider
+          value: gemini
+      placeholder:
+        en_US: Enter your Google AI Studio API Key
+        zh_Hans: 在此输入 Google AI Studio API Key
+        ja_JP: Google AI Studio API キーを入力
     - variable: window_size
       label:
         en_US: Sliding window size
         zh_Hans: 滑动窗口大小
+        ja_JP: スライドウィンドウサイズ
       required: false
       show_on:
         - variable: __model_type
@@ -63,6 +101,7 @@ model_credential_schema:
       label:
         en_US: Sliding step size
         zh_Hans: 滑动步长
+        ja_JP: スライドステップサイズ
       required: false
       show_on:
         - variable: __model_type
@@ -75,6 +114,7 @@ model_credential_schema:
       label:
         en_US: Max words per doc
         zh_Hans: 单文档最大词数
+        ja_JP: ドキュメントあたりの最大単語数
       required: false
       show_on:
         - variable: __model_type
@@ -83,16 +123,6 @@ model_credential_schema:
       default: "300"
       placeholder:
         en_US: Truncate each passage before reranking
-provider_credential_schema:
-  credential_form_schemas:
-    - variable: openai_api_key
-      label:
-        en_US: API Key
-      type: secret-input
-      required: true
-      placeholder:
-        zh_Hans: 在此输入 OpenAI API Key
-        en_US: Enter your API Key
 extra:
   python:
     provider_source: provider/rankgpt.py

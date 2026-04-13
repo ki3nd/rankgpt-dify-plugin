@@ -1,8 +1,7 @@
-﻿from typing import Optional
+from typing import Optional
 
 import httpx
 import re
-from openai import OpenAI
 from openai import (
     APIConnectionError,
     APITimeoutError,
@@ -26,10 +25,10 @@ from dify_plugin.errors.model import (
     InvokeRateLimitError,
     InvokeServerUnavailableError,
 )
-from dify_plugin.entities.model.rerank import (
-    RerankDocument,
-    RerankResult,
-)
+from dify_plugin.entities.model.rerank import RerankDocument, RerankResult
+
+from .llm_client import LLMClient, create_client
+
 
 class RankgptRerankModel(RerankModel):
     """
@@ -46,31 +45,17 @@ class RankgptRerankModel(RerankModel):
         top_n: Optional[int] = None,
         user: Optional[str] = None,
     ) -> RerankResult:
-        """
-        Invoke rerank model
-
-        :param model: model name
-        :param credentials: model credentials
-        :param query: search query
-        :param docs: docs for reranking
-        :param score_threshold: score threshold
-        :param top_n: top n documents to return
-        :param user: unique user id
-        :return: rerank result
-        """
         if len(docs) == 0:
             return RerankResult(model=model, docs=[])
 
         if top_n is None:
             top_n = len(docs)
+
         window_size = int(credentials.get("window_size") or 0)
         step_size = int(credentials.get("step_size") or 0)
         max_doc_words = int(credentials.get("max_doc_words") or 300)
 
-        client = OpenAI(
-            api_key=credentials.get("openai_api_key"),
-            base_url=credentials.get("openai_base_url") or None,
-        )
+        client = create_client(credentials)
 
         ranked_indices = self._rank_documents_with_sliding_windows(
             client=client,
@@ -102,7 +87,7 @@ class RankgptRerankModel(RerankModel):
 
     def _rank_documents_with_sliding_windows(
         self,
-        client: OpenAI,
+        client: LLMClient,
         model: str,
         query: str,
         docs: list[str],
@@ -150,7 +135,7 @@ class RankgptRerankModel(RerankModel):
 
     def _rank_one_window(
         self,
-        client: OpenAI,
+        client: LLMClient,
         model: str,
         query: str,
         docs: list[str],
@@ -193,14 +178,12 @@ class RankgptRerankModel(RerankModel):
             }
         )
 
-        completion = client.chat.completions.create(
+        response = client.chat_complete(
             model=model,
             messages=messages,
-            temperature=0,
             max_tokens=min(512, 8 * num + 16),
             user=user,
         )
-        response = (completion.choices[0].message.content or "").strip()
 
         relative_order = self._parse_rank_response(response=response, total=num)
         return [indices[i] for i in relative_order]
@@ -225,13 +208,6 @@ class RankgptRerankModel(RerankModel):
         return 1.0 / float(final_rank + 1)
 
     def validate_credentials(self, model: str, credentials: dict) -> None:
-        """
-        Validate model credentials
-
-        :param model: model name
-        :param credentials: model credentials
-        :return:
-        """
         try:
             self._invoke(
                 model=model,
@@ -250,9 +226,6 @@ class RankgptRerankModel(RerankModel):
 
     @property
     def _invoke_error_mapping(self) -> dict[type[InvokeError], list[type[Exception]]]:
-        """
-        Map model invoke error to unified error
-        """
         return {
             InvokeConnectionError: [httpx.ConnectError, APIConnectionError, APITimeoutError],
             InvokeServerUnavailableError: [httpx.RemoteProtocolError, InternalServerError],
@@ -264,15 +237,10 @@ class RankgptRerankModel(RerankModel):
     def get_customizable_model_schema(
         self, model: str, credentials: dict
     ) -> AIModelEntity:
-        """
-        generate custom model entities from credentials
-        """
-        entity = AIModelEntity(
+        return AIModelEntity(
             model=model,
             label=I18nObject(en_US=model),
             model_type=ModelType.RERANK,
             fetch_from=FetchFrom.CUSTOMIZABLE_MODEL,
             model_properties={},
         )
-
-        return entity
