@@ -1,4 +1,4 @@
-﻿version: 0.2.0
+﻿version: 0.3.0
 type: plugin
 author: ki3nd
 name: rankgpt
@@ -29,7 +29,7 @@ plugins:
   models:
     - provider/rankgpt.yaml
 meta:
-  version: 0.2.0
+  version: 0.3.0
   arch:
     - amd64
     - arm64
