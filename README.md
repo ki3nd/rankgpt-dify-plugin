@@ -1,8 +1,8 @@
 # RankGPT Dify Plugin
 
-LLM-based RankGPT reranker plugin for Dify, supporting OpenAI and Google Gemini.
+LLM-based RankGPT reranker plugin for Dify, supporting OpenAI, Google Gemini, and Anthropic.
 
-**Author:** [ki3dn](https://github.com/ki3nd)   
+**Author:** [ki3nd](https://github.com/ki3nd)   
 **Type:** model   
 **Github Repo:** [https://github.com/ki3nd/rankgpt-dify-plugin](https://github.com/ki3nd/rankgpt-dify-plugin)   
 **Github Issues:** [issues](https://github.com/ki3nd/rankgpt-dify-plugin/issues)  
@@ -13,7 +13,7 @@ This plugin adds a `rerank model provider` to Dify and uses an LLM to reorder re
 
 ## Features
 
-- Supports **OpenAI** and **Google Gemini** providers
+- Supports **OpenAI**, **Google Gemini**, and **Anthropic** providers
 - RankGPT-style permutation reranking
 - Sliding-window reranking for longer document lists
 - Rank-based pseudo-score output (`1/(rank+1)`)
@@ -24,11 +24,12 @@ When configuring the `rankgpt` provider in Dify:
 
 | Field | Description |
 |---|---|
-| `provider` | `openai` or `gemini` |
-| `model` | e.g. `gpt-4o-mini` or `gemini-2.0-flash` |
+| `provider` | `openai`, `gemini`, or `anthropic` |
+| `model` | e.g. `gpt-4o-mini`, `gemini-2.0-flash`, or `claude-sonnet-4-20250514` |
 | `openai_api_key` | OpenAI API key *(OpenAI only)* |
 | `openai_base_url` | Optional, for OpenAI-compatible endpoints *(OpenAI only)* |
 | `gemini_api_key` | Google AI Studio API key *(Gemini only)* |
+| `anthropic_api_key` | Anthropic API key *(Anthropic only)* |
 | `window_size` | Sliding window size (default `20`) |
 | `step_size` | Sliding step size (default `10`) |
 | `max_doc_words` | Max words per passage before truncation (default `300`) |

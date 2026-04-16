@@ -1,6 +1,6 @@
 ﻿version: 0.2.0
 type: plugin
-author: ki3dn
+author: ki3nd
 name: rankgpt
 label:
   en_US: rankgpt
@@ -8,10 +8,10 @@ label:
   zh_Hans: rankgpt
   pt_BR: rankgpt
 description:
-  en_US: LLM-based RankGPT reranker supporting OpenAI and Google Gemini for reordering retrieved documents by query relevance.
-  ja_JP: OpenAI と Google Gemini をサポートする LLM ベースの RankGPT リランカー。クエリ関連性に基づいて検索文書を再順位付けします。
-  zh_Hans: 支持 OpenAI 和 Google Gemini 的 LLM 重排模型，可按查询相关性重新排序检索文档。
-  pt_BR: Reranqueador RankGPT baseado em LLM com suporte a OpenAI e Google Gemini para reordenar documentos por relevancia.
+  en_US: LLM-based RankGPT reranker supporting OpenAI, Google Gemini, and Anthropic for reordering retrieved documents by query relevance.
+  ja_JP: OpenAI、Google Gemini、Anthropic をサポートする LLM ベースの RankGPT リランカー。クエリ関連性に基づいて検索文書を再順位付けします。
+  zh_Hans: 支持 OpenAI、Google Gemini 和 Anthropic 的 LLM 重排模型，可按查询相关性重新排序检索文档。
+  pt_BR: Reranqueador RankGPT baseado em LLM com suporte a OpenAI, Google Gemini e Anthropic para reordenar documentos por relevancia.
 icon: icon.svg
 icon_dark: icon.svg
 resource:

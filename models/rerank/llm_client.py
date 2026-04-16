@@ -4,6 +4,7 @@ from typing import Optional
 from openai import OpenAI
 from google import genai as google_genai
 from google.genai import types as google_types
+from anthropic import Anthropic
 
 
 class LLMClient(ABC):
@@ -76,10 +77,43 @@ class GeminiClient(LLMClient):
         return (response.text or "").strip()
 
 
+class AnthropicClient(LLMClient):
+    def __init__(self, api_key: str):
+        self._client = Anthropic(api_key=api_key)
+
+    def chat_complete(
+        self,
+        model: str,
+        messages: list[dict],
+        max_tokens: int,
+        user: Optional[str] = None,  # not supported by Anthropic, ignored
+    ) -> str:
+        system_text: Optional[str] = None
+        chat_messages = messages
+
+        if chat_messages and chat_messages[0]["role"] == "system":
+            system_text = chat_messages[0]["content"]
+            chat_messages = chat_messages[1:]
+
+        response = self._client.messages.create(
+            model=model,
+            system=system_text or "",
+            messages=[
+                {"role": msg["role"], "content": msg["content"]}
+                for msg in chat_messages
+            ],
+            temperature=0,
+            max_tokens=max_tokens,
+        )
+        return (response.content[0].text if response.content else "").strip()
+
+
 def create_client(credentials: dict) -> LLMClient:
     provider = credentials.get("provider", "openai")
     if provider == "gemini":
         return GeminiClient(api_key=credentials["gemini_api_key"])
+    if provider == "anthropic":
+        return AnthropicClient(api_key=credentials["anthropic_api_key"])
     return OpenAIClient(
         api_key=credentials.get("openai_api_key"),
         base_url=credentials.get("openai_base_url") or None,
