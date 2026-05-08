@@ -1,6 +1,6 @@
 # RankGPT Dify Plugin
 
-LLM-based RankGPT reranker plugin for Dify, supporting OpenAI, Google Gemini, and Anthropic.
+LLM-based RankGPT reranker plugin for Dify, supporting OpenAI, Google Gemini, Anthropic, DeepSeek, and Grok.
 
 **Author:** [ki3nd](https://github.com/ki3nd)   
 **Type:** model   
@@ -13,7 +13,7 @@ This plugin adds a `rerank model provider` to Dify and uses an LLM to reorder re
 
 ## Features
 
-- Supports **OpenAI**, **Google Gemini**, and **Anthropic** providers
+- Supports **OpenAI**, **Google Gemini**, **Anthropic**, **DeepSeek**, and **Grok** providers
 - RankGPT-style permutation reranking
 - Sliding-window reranking for longer document lists
 - Rank-based pseudo-score output (`1/(rank+1)`)
@@ -30,6 +30,10 @@ When configuring the `rankgpt` provider in Dify:
 | `openai_base_url` | Optional, for OpenAI-compatible endpoints *(OpenAI only)* |
 | `gemini_api_key` | Google AI Studio API key *(Gemini only)* |
 | `anthropic_api_key` | Anthropic API key *(Anthropic only)* |
+| `deepseek_api_key` | DeepSeek API key *(DeepSeek only)* |
+| `deepseek_base_url` | Optional, for custom DeepSeek endpoint *(DeepSeek only)* |
+| `grok_api_key` | xAI Grok API key *(Grok only)* |
+| `grok_base_url` | Optional, e.g. `https://us-east-1.api.x.ai/v1` *(Grok only)* |
 | `window_size` | Sliding window size (default `20`) |
 | `step_size` | Sliding step size (default `10`) |
 | `max_doc_words` | Max words per passage before truncation (default `300`) |

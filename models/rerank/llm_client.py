@@ -114,6 +114,16 @@ def create_client(credentials: dict) -> LLMClient:
         return GeminiClient(api_key=credentials["gemini_api_key"])
     if provider == "anthropic":
         return AnthropicClient(api_key=credentials["anthropic_api_key"])
+    if provider == "deepseek":
+        return OpenAIClient(
+            api_key=credentials["deepseek_api_key"],
+            base_url=credentials.get("deepseek_base_url") or "https://api.deepseek.com",
+        )
+    if provider == "grok":
+        return OpenAIClient(
+            api_key=credentials["grok_api_key"],
+            base_url=credentials.get("grok_base_url") or "https://api.x.ai/v1",
+        )
     return OpenAIClient(
         api_key=credentials.get("openai_api_key"),
         base_url=credentials.get("openai_base_url") or None,

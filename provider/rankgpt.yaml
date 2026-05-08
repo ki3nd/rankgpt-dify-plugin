@@ -49,6 +49,16 @@ model_credential_schema:
             en_US: Anthropic
             zh_Hans: Anthropic
             ja_JP: Anthropic
+        - value: deepseek
+          label:
+            en_US: DeepSeek
+            zh_Hans: DeepSeek
+            ja_JP: DeepSeek
+        - value: grok
+          label:
+            en_US: Grok (xAI)
+            zh_Hans: Grok (xAI)
+            ja_JP: Grok (xAI)
     - variable: openai_api_key
       label:
         en_US: OpenAI API Key
@@ -103,6 +113,58 @@ model_credential_schema:
         en_US: Enter your Anthropic API Key
         zh_Hans: 在此输入 Anthropic API Key
         ja_JP: Anthropic API キーを入力
+    - variable: deepseek_api_key
+      label:
+        en_US: DeepSeek API Key
+        zh_Hans: DeepSeek API Key
+        ja_JP: DeepSeek API キー
+      type: secret-input
+      required: false
+      show_on:
+        - variable: provider
+          value: deepseek
+      placeholder:
+        en_US: Enter your DeepSeek API Key
+        zh_Hans: 在此输入 DeepSeek API Key
+        ja_JP: DeepSeek API キーを入力
+    - variable: deepseek_base_url
+      label:
+        en_US: Base URL (optional)
+        zh_Hans: Base URL（可选）
+        ja_JP: ベース URL（省略可）
+      type: text-input
+      required: false
+      show_on:
+        - variable: provider
+          value: deepseek
+      placeholder:
+        en_US: https://api.deepseek.com
+    - variable: grok_api_key
+      label:
+        en_US: Grok API Key
+        zh_Hans: Grok API Key
+        ja_JP: Grok API キー
+      type: secret-input
+      required: false
+      show_on:
+        - variable: provider
+          value: grok
+      placeholder:
+        en_US: Enter your xAI Grok API Key
+        zh_Hans: 在此输入 xAI Grok API Key
+        ja_JP: xAI Grok API キーを入力
+    - variable: grok_base_url
+      label:
+        en_US: Base URL (optional)
+        zh_Hans: Base URL（可选）
+        ja_JP: ベース URL（省略可）
+      type: text-input
+      required: false
+      show_on:
+        - variable: provider
+          value: grok
+      placeholder:
+        en_US: https://api.x.ai/v1
     - variable: window_size
       label:
         en_US: Sliding window size
